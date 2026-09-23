@@ -1,0 +1,30 @@
+[package]
+name = "eipscanner"
+version = "0.1.0"
+edition = "2024"
+description = "EtherNet/IP scanner: explicit messaging, implicit IO connections, and discovery"
+license = "MIT"
+rust-version = "1.88"
+
+[dependencies]
+bytes = "1.12"
+libc = "0.2"
+thiserror = "2"
+tracing = "0.1"
+
+[dev-dependencies]
+clap = { version = "4", features = ["derive"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[features]
+default = ["vendor"]
+# Vendor-specific objects under src/vendor (PowerFlex 525, Yaskawa MP3300iec).
+vendor = []
+
+[[example]]
+name = "powerflex525_faults"
+required-features = ["vendor"]
+
+[[example]]
+name = "yaskawa_assembly"
+required-features = ["vendor"]
