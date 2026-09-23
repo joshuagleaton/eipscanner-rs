@@ -78,6 +78,8 @@ impl DiscoveryManager {
             socket.set_read_timeout(Some(remaining))?;
             let (len, from) = match socket.recv_from(&mut buf) {
                 Ok(r) => r,
+                // SO_RCVTIMEO makes Linux return EINTR instead of restarting the call.
+                Err(e) if e.kind() == io::ErrorKind::Interrupted => continue,
                 Err(e)
                     if matches!(
                         e.kind(),
